@@ -31,7 +31,7 @@ function Ads(props) {
             googleId: data.updatedUser.googleId,
             name: data.updatedUser.username,
             photo: data.updatedUser.image,
-            isAdmin: resObject.user.isAdmin,
+            isAdmin: data.updatedUser.isAdmin,
             favourite: data.updatedUser.favourite,
         }))
 
