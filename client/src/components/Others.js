@@ -69,7 +69,8 @@ function Others() {
                     </ProfileImg>
                 </ImgContainer>
                 <h3>{seller.username}</h3>
-                <i className="fa-solid fa-trash" onClick={deleteAdd}></i>
+                {isAdmin && 
+                <i className="fa-solid fa-trash" onClick={deleteAdd}></i>}
             </Profile>
             <span className="bodySpan">Published Ads</span>
             {sellerAds && 
