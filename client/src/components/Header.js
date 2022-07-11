@@ -17,7 +17,7 @@ function Header() {
     const isMobile = useMediaQuery({ query: `(min-width: 530px)` });
     const [input, setInput] = useState("")
     const logout = () => {
-        window.open("http://localhost:5000/auth/logout", "_self");
+        window.open("https://olx-clone-aman.herokuapp.com/auth/logout", "_self");
     };
     function sellbtn() {
         userimage ? (navigate("/sell")) : (alert("Login Required"))
@@ -32,7 +32,7 @@ function Header() {
         setInput("")
     }
     const google = () => {
-        window.open("http://localhost:5000/auth/google", "_self");
+        window.open("https://olx-clone-aman.herokuapp.com/auth/google", "_self");
     };
     return (
         <Container>

@@ -16,7 +16,7 @@ function Myads() {
           (choice === "ads") ? 
           
             (                
-                await fetch('http://localhost:5000/adds/myads',{
+                await fetch('https://olx-clone-aman.herokuapp.com/adds/myads',{
                 method: "GET",
                 mode: "cors",
                 credentials: "include",
@@ -30,7 +30,7 @@ function Myads() {
 
             ) : ( 
 
-                await fetch('http://localhost:5000/adds/myads/favourite',{
+                await fetch('https://olx-clone-aman.herokuapp.com/adds/myads/favourite',{
                 method: "GET",
                 mode: "cors",
                 credentials: "include",

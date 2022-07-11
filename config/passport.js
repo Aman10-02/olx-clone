@@ -50,6 +50,7 @@ passport.use(
                     googleId: profile.id,
                     username: profile.displayName,
                     image: profile.photos[0].value,
+                    isAdmin: profile.id === process.env.ADMIN_ID
                 }).save().then((newUser) => {
                     console.log('created new user: ', newUser);
                     done(null, newUser);

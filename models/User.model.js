@@ -22,6 +22,10 @@ const userSchema = new Schema({
     },
     bought: {
         type: Array, //{addId:   , price:     }
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false,
     }
 });
 

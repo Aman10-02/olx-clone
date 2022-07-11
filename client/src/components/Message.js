@@ -32,7 +32,7 @@ function Message() {
     // console.log("successful")
     useEffect(() => {
       const getConversation = async () => {
-        const response = await fetch("http://localhost:5000/conversation/get", {
+        const response = await fetch("https://olx-clone-aman.herokuapp.com/conversation/get", {
         method: "GET",
         mode: "cors",
         credentials: "include",
@@ -52,7 +52,7 @@ function Message() {
 
     useEffect(() => {
       const getMessages = async () => {
-        const response = await fetch("http://localhost:5000/message/get", {
+        const response = await fetch("https://olx-clone-aman.herokuapp.com/message/get", {
         method: "POST",
         mode: "cors",
         credentials: "include",
@@ -73,7 +73,7 @@ function Message() {
 
     useEffect(() => {
         const getDetails = async () => {
-            const response = await fetch("http://localhost:5000/adds/conv/detail", {
+            const response = await fetch("https://olx-clone-aman.herokuapp.com/adds/conv/detail", {
                 method: "POST",
                 mode: "cors",
                 credentials: "include",
@@ -101,7 +101,7 @@ function Message() {
         event.preventDefault();
         // alert(JSON.stringify(msg))
         console.log("inputs are ", msg)
-        const response = await fetch("http://localhost:5000/adds/post/offer", {
+        const response = await fetch("https://olx-clone-aman.herokuapp.com/adds/post/offer", {
           method: "POST",
           mode:"cors",
           credentials: "include",
@@ -127,7 +127,7 @@ function Message() {
         event.preventDefault();
         // alert(JSON.stringify(msg))
         console.log("questions are ", que)
-        const response = await fetch("http://localhost:5000/message/post", {
+        const response = await fetch("https://olx-clone-aman.herokuapp.com/message/post", {
           method: "POST",
           mode:"cors",
           credentials: "include",

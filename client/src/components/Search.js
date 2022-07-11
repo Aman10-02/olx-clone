@@ -33,7 +33,7 @@ function Search() {
   }
   useEffect(() => {
     const getsearchedAds = async () => {
-      const response = await fetch("http://localhost:5000/adds/search", {
+      const response = await fetch("https://olx-clone-aman.herokuapp.com/adds/search", {
         method: "POST",
         mode: "cors",
         credentials: "include",

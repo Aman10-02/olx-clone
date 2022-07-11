@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require("express");
 const authRoutes = require('./routes/auth');
 const addsRoutes = require('./routes/adds');
+const addsUpdateRoutes = require('./routes/addsUpdate');
 const userRoutes = require('./routes/user');
 const conversationRoutes = require('./routes/conversation');
 const messageRoutes = require('./routes/message');
@@ -12,6 +13,7 @@ require('./config/passport');
 const cookieSession = require('cookie-session');
 const passport = require('passport')
 const cors = require("cors");
+const path = require("path")
 
 const app = express();
 app.use(express.json());
@@ -47,12 +49,26 @@ mongoose
     console.log(err);
   });
 app.use("/auth", authRoutes);
+app.use("/update", addsUpdateRoutes);
 app.use("/adds", addsRoutes);
 app.use("/user", userRoutes);
 app.use("/conversation", conversationRoutes);
 app.use("/message", messageRoutes);
 
 
-app.listen("5000", () => {
+
+
+
+app.use(express.static(path.join(__dirname, "/client/build")));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+});
+
+
+
+
+
+app.listen(process.env.PORT || 5000, () => {
     console.log("server is running")
 })

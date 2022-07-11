@@ -3,16 +3,17 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { selectUserFavourite, selectUserName, setUserLogin} from '../features/user/userSlice';
+import { selectUserFavourite, selectUserName, selectUserAdmin, setUserLogin } from '../features/user/userSlice';
 
 function Ads(props) {
     const favourite = useSelector(selectUserFavourite);
     const dispatch = useDispatch();
     const username = useSelector(selectUserName);
-    // console.log("ads page",username)
+    const isAdmin = useSelector(selectUserAdmin);
+    console.log("ads page cookie", process.env.REACT_APP_ADMIN_ID)
     // console.log("ads page fav", favourite)
     const setfav = async () => {
-        const response = await fetch("http://localhost:5000/adds/favourite", {
+        const response = await fetch("https://olx-clone-aman.herokuapp.com/adds/favourite", {
             method: "POST",
             mode: "cors",
             credentials: "include",
@@ -25,13 +26,13 @@ function Ads(props) {
             body: props.adDetail._id,
         })
         const data = await response.json();
-        console.log("from fav func",data.updatedUser)
+        console.log("from fav func", data.updatedUser)
         dispatch(setUserLogin({
             googleId: data.updatedUser.googleId,
             name: data.updatedUser.username,
             photo: data.updatedUser.image,
             favourite: data.updatedUser.favourite,
-        })) 
+        }))
 
         // // console.log("favourite after dispatch",favourite)
         // console.log("Adspage:", JSON.stringify(props.adDetail));
@@ -39,29 +40,31 @@ function Ads(props) {
         // )
         // window.location.reload();
     };
-    
-    // const deleteAdd = async ()=> {
-    //     const response = await fetch("http://localhost:5000/adds/delete", {
-    //         method: "POST",
-    //         mode: "cors",
-    //         credentials: "include",
-    //         headers: {
-    //             Accept: "application/json",
-    //             // "Content-Type": "application/json",
-    //             "Access-Control-Allow-Credentials": true,
-    //             "Access-Control-Allow-Origin": true,
-    //         },
-    //         body: props.adDetail._id,
-    //     })
-    //     const data = await response.json();
-    //     console.log("from fav func",data.updatedUser)
-    //     dispatch(setUserLogin({
-    //         googleId: data.updatedUser.googleId,
-    //         name: data.updatedUser.username,
-    //         photo: data.updatedUser.image,
-    //         favourite: data.updatedUser.favourite,
-    //     }))
-    // }
+
+    const deleteAdd = async () => {
+        alert("add deleted")
+        const response = await fetch("https://olx-clone-aman.herokuapp.com/adds/delete", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                Accept: "application/json",
+                // "Content-Type": "application/json",
+                "Access-Control-Allow-Credentials": true,
+                "Access-Control-Allow-Origin": true,
+            },
+            body: props.adDetail._id,
+        })
+        const data = await response.json();
+        console.log("from fav func", data.message)
+        // dispatch(setUserLogin({
+        //     googleId: data.updatedUser.googleId,
+        //     name: data.updatedUser.username,
+        //     photo: data.updatedUser.image,
+        //     favourite: data.updatedUser.favourite,
+        // }))
+        window.location.reload();
+    }
     // else{
     //     console.log("nofav")
     // }
@@ -69,23 +72,23 @@ function Ads(props) {
         <Item>
             <Favourite>
 
-         {username ?
-                (  favourite &&  (favourite.includes(props.adDetail._id)) ?
-                <i className={`fa-solid fa-heart fa-xl`} onClick= { setfav  }></i> :
-                
-                <i className={`fa-regular fa-heart fa-xl`} onClick= { setfav }></i>
-                
-                ) : 
-            <i className={`fa-regular fa-heart fa-xl`} onClick= { () => { alert("Login to continue ") } }></i>
+                {username ?
+                    (favourite && (favourite.includes(props.adDetail._id)) ?
+                        <i className={`fa-solid fa-heart fa-xl`} onClick={setfav}></i> :
 
-        
-        }
+                        <i className={`fa-regular fa-heart fa-xl`} onClick={setfav}></i>
+
+                    ) :
+                    <i className={`fa-regular fa-heart fa-xl`} onClick={() => { alert("Login to continue ") }}></i>
+
+
+                }
 
 
             </Favourite>
 
             <Link to="/details"
-                state= {props.adDetail}
+                state={props.adDetail}
             >
                 <ImageContainer>
                     <Image src={props.adDetail.image} />
@@ -98,10 +101,13 @@ function Ads(props) {
                     </Text>
                 </Detail>
             </Link>
-            <OwnAds>
-                {/* <i class="fa-solid fa-pencil" onClick={deleteAdd}></i> */}
-                {/* <i class="fa-solid fa-trash" onClick={deleteAdd}></i> */}
-            </OwnAds>
+            {
+                isAdmin &&
+                <OwnAds>
+
+                    <i className="fa-solid fa-trash" onClick={deleteAdd}></i>
+                </OwnAds>
+            }
         </Item>
     )
 }

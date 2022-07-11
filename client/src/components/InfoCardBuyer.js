@@ -13,7 +13,7 @@ function InfoCardBuyer({buyer, add}) {
   console.log("info card buyer",add)
   useEffect(() => {
     const getBuyer = async () => {
-      const response = await fetch("http://localhost:5000/user/getdetail", {
+      const response = await fetch("https://olx-clone-aman.herokuapp.com/user/getdetail", {
         method: "POST",
         mode: "cors",
         credentials: "include",
@@ -33,7 +33,7 @@ function InfoCardBuyer({buyer, add}) {
   }, []);
 
   const CreateConversation = async () => {
-    const response = await fetch("http://localhost:5000/conversation", {
+    const response = await fetch("https://olx-clone-aman.herokuapp.com/conversation", {
       method: "POST",
       mode: "cors",
       credentials: "include",
@@ -53,7 +53,7 @@ function InfoCardBuyer({buyer, add}) {
   }
 
   const Sold = async () => {
-    const response = await fetch("http://localhost:5000/adds/sold", {
+    const response = await fetch("https://olx-clone-aman.herokuapp.com/adds/sold", {
       method: "POST",
       mode: "cors",
       credentials: "include",

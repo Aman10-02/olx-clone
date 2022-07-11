@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
+import { selectUserAdmin } from '../features/user/userSlice';
 import Gridcontainer from './Gridcontainer.js'
 
 
 function Recommend() {
+    const admin = useSelector(selectUserAdmin);
     const [ads, setAds] = useState(null)
+    console.log("isadmin",admin)
 
     useEffect(() => {
         console.log("effect used")
         const getAds = () => {
             console.log("inside get ads func")
-            fetch("http://localhost:5000/adds/get/recommend", {
+            fetch("https://olx-clone-aman.herokuapp.com/adds/get/recommend", {
                 method: "GET",
                 credentials: "include",
                 headers: {

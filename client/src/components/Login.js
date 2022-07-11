@@ -5,10 +5,10 @@ function Login() {
 
 
     const google = () => {
-        window.open("http://localhost:5000/auth/google", "_self");
+        window.open("https://olx-clone-aman.herokuapp.com/auth/google", "_self");
     };
     const outlook = () => {
-        window.open("http://localhost:5000/auth/outlook", "_self");
+        window.open("https://olx-clone-aman.herokuapp.com/auth/outlook", "_self");
     };
 
   return (

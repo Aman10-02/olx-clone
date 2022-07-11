@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import Gridcontainer from './Gridcontainer'
-
+import { useSelector } from 'react-redux'
+import { selectUserAdmin } from '../features/user/userSlice';
 
 function Others() {
 
     const seller = useLocation().state;
     const [sellerAds, setSellerAds] = useState(null);
     const [soldAds, setSoldAds] = useState(null);
+    const navigate = useNavigate();
+    const isAdmin = useSelector(selectUserAdmin);
     console.log("others page", seller)
     useEffect(() => {
         const getsellerAds = async () => {
-            const response = await fetch("http://localhost:5000/adds/seller", {
+            const response = await fetch("https://olx-clone-aman.herokuapp.com/adds/seller", {
                 method: "POST",
                 mode: "cors",
                 credentials: "include",
@@ -31,6 +34,32 @@ function Others() {
         }
         getsellerAds();
     }, [seller]);
+
+
+    const deleteAdd = async() => {
+        alert("user deleted")
+        const response = await fetch("https://olx-clone-aman.herokuapp.com/user/delete", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                Accept: "application/json",
+                // "Content-Type": "application/json",
+                "Access-Control-Allow-Credentials": true,
+                "Access-Control-Allow-Origin": true,
+            },
+            body: seller.googleId,
+        })
+        const data = await response.json();
+        console.log("from fav func",data.message)
+        // dispatch(setUserLogin({
+        //     googleId: data.updatedUser.googleId,
+        //     name: data.updatedUser.username,
+        //     photo: data.updatedUser.image,
+        //     favourite: data.updatedUser.favourite,
+        // }))
+        navigate("/");
+    }
     return (
         <div className="bodyContainer">
             <Profile>
@@ -40,6 +69,7 @@ function Others() {
                     </ProfileImg>
                 </ImgContainer>
                 <h3>{seller.username}</h3>
+                <i className="fa-solid fa-trash" onClick={deleteAdd}></i>
             </Profile>
             <span className="bodySpan">Published Ads</span>
             {sellerAds && 
@@ -60,11 +90,26 @@ const Profile = styled.div`
     background-color: #9f9d9d;
     align-items: center;
     margin-bottom: 32px;
+    position: relative;
     h3 {
         font-size: min(5vw, 40px);
         font-weight: 500;
         text-transform: capitalize;
         /* font-size: max(4vw,25px); */
+    }
+    i {
+        position: absolute;
+        bottom: 0.6em;
+        right: 0.6em;
+        z-index: 10;
+        cursor: pointer;
+        margin-left: 0.5rem;
+        padding: 0.3rem;
+    }
+    i:hover {
+        background-color: #cccccc;
+        /* border: solid; */
+        border-radius: 50%;
     }
 `
 const ImgContainer = styled.div`

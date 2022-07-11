@@ -2,16 +2,48 @@ import React from 'react'
 import styled from 'styled-components'
 // import { Link } from 'react-router-dom'
 import { useSelector, useDispatch} from 'react-redux';
-import { selectUserFavourite, selectUserName, setUserLogin} from '../features/user/userSlice';
+import { selectUserFavourite, selectUserGoogleId, selectUserName, setUserLogin} from '../features/user/userSlice';
+import Popup from 'reactjs-popup';
+import { useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate } from 'react-router-dom';
 
 function PriceCard(props) {
     const favourite = useSelector(selectUserFavourite);
     const dispatch = useDispatch();
     const username = useSelector(selectUserName);
+    const googleId = useSelector(selectUserGoogleId);
+    const navigate = useNavigate();
+    const isposition = useMediaQuery({ query: `(max-width: 611px)` });
+    const [price, setPrice] = useState(props.adDetail.price)
+    const [title, setTitle] = useState(props.adDetail.title)
+    const handlesubmit = async (e) => {
+      e.preventDefault();
+      if(title && price){
+        const response = await fetch("https://olx-clone-aman.herokuapp.com/update/price", {
+          method: "POST",
+          mode:"cors",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Credentials": true,
+            "Access-Control-Allow-Origin": true,
+          },
+          body: JSON.stringify({title: title,price: price, id: props.adDetail._id }),
+        });
+      const data = await response.json();
+      console.log(data)
+      navigate("/my-ads");
+    }
+    else{
+      alert("Price and Title can't be empty")
+    }
+  }
     // console.log("ads page",username)
     // console.log("ads page fav", favourite)
     const setfav = async () => {
-        const response = await fetch("http://localhost:5000/adds/favourite", {
+        const response = await fetch("https://olx-clone-aman.herokuapp.com/adds/favourite", {
             method: "POST",
             mode: "cors",
             credentials: "include",
@@ -54,9 +86,28 @@ function PriceCard(props) {
           )
         }
       </Head>
-      <Profile>
+      <Title>
         <h5>{props.adDetail.title}</h5>
-      </Profile>
+      </Title>
+      {googleId && (props?.adDetail.createdbygoogleId === googleId) &&
+            <Edit
+              trigger={open => (
+                <i className="fa-solid fa-pen"></i>
+                // <button className="button">Trigger - {open ? 'Opened' : 'Closed'}</button>
+              )}
+              position= {isposition ? "bottom right" : "bottom center"}
+              closeOnDocumentClick
+            >
+              <EditBox onSubmit={handlesubmit}>
+                Edit Price
+                <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
+
+                Edit Title
+                <textarea type="text" placeholder='Write your text here' value={title} onChange={(e) => setTitle(e.target.value)} />
+                <button type='submit'>Update</button>
+              </EditBox>
+            </Edit>
+           }
     </Infos>
   )
 }
@@ -68,6 +119,18 @@ const Infos = styled.div`
   padding: 1rem 0.8rem;
   border: solid;
   width: 35;
+  position: relative;
+  & > i {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    :hover {
+      background-color: #cccccc;
+      border-radius: 50%;
+    }
+  }
   /* background-color: yellowgreen; */
 `
 const Head = styled.div`
@@ -88,7 +151,7 @@ const Head = styled.div`
     cursor: pointer;
   }
 `
-const Profile = styled.div`
+const Title = styled.div`
   width: 100%;
   display: flex;
   /* background-color: #9f9d9d; */
@@ -99,5 +162,57 @@ const Profile = styled.div`
       font-weight: 500;
       /* font-size: max(4vw,25px); */
       color: black;
+  }
+`
+const EditBox = styled.form`
+  /* width: 100px;
+  height: 100px; */
+  /* background-color: white; */
+  display: flex;
+  flex-direction: column;
+  input {
+    margin-top: 0.3rem;
+      padding: 2px 5px;
+      /* min-height: 60px; */
+      width: 50vw;
+      min-width: 200px;
+      max-width: 400px;
+  }
+  textarea {
+      margin-top: 0.3rem;
+      padding: 2px 5px;
+      min-height: 50px;
+      width: 50vw;
+      min-width: 200px;
+      max-width: 400px;
+      /* max-height: 40px; */
+      resize: none;
+  }
+  button {
+    width: 50px;
+    margin-top: 0.3rem;
+  }
+  /* margin: 1rem; */
+
+  /* position: fixed;
+  left: 50%; */
+  /* left: calc(50%); */
+  /* transform: translateX(-100%); */
+  /* transform: translateY(-100%); */
+`
+const Edit = styled(Popup)`
+/* position: bottom right; */
+  &-overlay {
+    background-color: #cccccc;
+    opacity: 0.3;
+  }
+  &-content {
+    background-color: #cccccc;
+    opacity: 0.9;
+    padding: 1rem;
+  }
+  &-arrow {
+    color: #cccccc;
+
   }
 `

@@ -31,7 +31,7 @@ function App() {
     console.log("effect used")
     const getUser = () => {
       console.log("inside get user func")
-      fetch("http://localhost:5000/auth/login/success", {
+      fetch("https://olx-clone-aman.herokuapp.com/auth/login/success", {
         method: "GET",
         credentials: "include",
         headers: {
@@ -49,11 +49,13 @@ function App() {
           dispatch(setSignOut());
         })
         .then((resObject) => {
+          console.log("login response",resObject)
           setUser(resObject.user);
           dispatch(setUserLogin({
             googleId: resObject.user.googleId,
             name: resObject.user.username,
             photo: resObject.user.image,
+            isAdmin: resObject.user.isAdmin,
             favourite: resObject.user.favourite,
           }))
         })

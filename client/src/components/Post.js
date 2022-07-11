@@ -59,7 +59,7 @@ function Post() {
                     const item = { ...inputs, image: downloadURL }; 
                     alert(JSON.stringify(item))
                     console.log("inputs are ", item)
-                    const response = await fetch("http://localhost:5000/adds/post", {
+                    const response = await fetch("https://olx-clone-aman.herokuapp.com/adds/post", {
                       method: "POST",
                       mode:"cors",
                       credentials: "include",

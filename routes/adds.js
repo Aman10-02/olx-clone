@@ -1,6 +1,8 @@
 const router = require("express").Router();
 // const passport = require('passport');
-const Add = require("../models/Add.model")
+const Add = require("../models/Add.model");
+const Conversation = require("../models/Conversation.model");
+const Message = require("../models/Message.module");
 const User = require("../models/User.model")
 
 router.post('/post', (req, res) => {
@@ -178,7 +180,7 @@ router.post('/post/offer', async (req, res) => {
         router.get('/myads/favourite', async (req, res) => {
             console.log("request for get myads favourite", req.user.googleId)
             const adds = await Add.find({favourite:{ $in : req.user.googleId }, sold: false});
-            const soldadds = await Add.find({favourite:{ $in : req.user.googleId }, sold: true});
+            const soldadds = await Add.find({createdbygoogleId: req.user.googleId, favourite:{ $in : req.user.googleId }, sold: true});
             const bought = await Add.find({favourite:{ $in : req.user.googleId }, soldTo: req.user.googleId });
             
         console.log("ads myadds:", adds)
@@ -266,6 +268,8 @@ router.post('/delete', async (req, res) => {
     console.log("request for delete", req.body)
     // const body = JSON.parse(req.body);
     await Add.deleteOne({_id : req.body})
+    await Conversation.deleteMany({addId : req.body})
+    
     // await User.updateOne({googleId: body.soldTo}, {$push:{"bought": {addId: body.addId, price: body.soldAt}}})
     // console.log("ads myadds:", adds)
     res.status(200).json({

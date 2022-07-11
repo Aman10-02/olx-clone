@@ -3,6 +3,10 @@ import styled from 'styled-components'
 import { Link, useNavigate } from 'react-router-dom'
 import { selectUserGoogleId, selectUserName } from '../features/user/userSlice'
 import { useSelector } from 'react-redux'
+
+
+
+
 function InfoCard({ add }) {
   const [seller, setSeller] = useState("")
   const username = useSelector(selectUserName);
@@ -16,7 +20,7 @@ function InfoCard({ add }) {
   }
   useEffect(() => {
     const getSeller = async () => {
-      const response = await fetch("http://localhost:5000/user/getdetail", {
+      const response = await fetch("https://olx-clone-aman.herokuapp.com/user/getdetail", {
         method: "POST",
         mode: "cors",
         credentials: "include",
@@ -36,7 +40,7 @@ function InfoCard({ add }) {
   }, [add]);
 
   const CreateConversation = async () => {
-      const response = await fetch("http://localhost:5000/conversation", {
+      const response = await fetch("https://olx-clone-aman.herokuapp.com/conversation", {
         method: "POST",
         mode: "cors",
         credentials: "include",
