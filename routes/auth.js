@@ -24,7 +24,7 @@ router.get("/login/failed", (req, res) => {
 });
 router.get("/logout", (req, res) => {
     req.logout();
-    res.redirect("http://localhost:3000");
+    res.redirect("https://olx-clone-aman.herokuapp.com/");
   });
 
 
@@ -35,7 +35,7 @@ router.get('/google', passport.authenticate('google', {
 }));
 
 router.get('/google/callback', passport.authenticate('google', {
-    successRedirect: "http://localhost:3000",
+    successRedirect: "https://olx-clone-aman.herokuapp.com/",
     failureRedirect: "/login/failed",
 }));
 
@@ -51,7 +51,7 @@ router.get('/outlook', passport.authenticate('microsoft', {
 }));
 
 router.get('/outlook/callback', passport.authenticate('microsoft', {
-    successRedirect: "http://localhost:3000",
+    successRedirect: "https://olx-clone-aman.herokuapp.com/",
     failureRedirect: "/login/failed",
 }));
 
